@@ -1,0 +1,29 @@
+.form{
+    width: 100%;
+    max-width: 750px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.inputsFiltros{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+    gap: 30px;
+}
+
+.filtro{
+    display: flex;
+    flex-direction: column;
+}
+
+.filtro input{
+    height: 35px;
+    outline: none;
+    border: none;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    margin-top: 10px;
+}
