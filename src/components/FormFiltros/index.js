@@ -4,6 +4,15 @@ import InputForm from "../InputForm/index";
 import Button from "../ButtonForm/index";
 import TableExtrato from "../TableExtrato";
 
+import React, { useState, useMemo } from 'react';
+import Pagination from '../PaginationTable/Pagination';
+
+import data from './data/mock-data.json';
+
+import "./style.css"
+
+let PageSize = 5;
+
 export default function FormFiltros(){
 
     const typesInputs = [
@@ -23,8 +32,19 @@ export default function FormFiltros(){
         alert("Pesquisar")
     }
 
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const currentTableData = useMemo(() => {
+
+      const firstPageIndex = (currentPage - 1) * PageSize;
+      const lastPageIndex = firstPageIndex + PageSize;
+      return data.slice(firstPageIndex, lastPageIndex);
+      
+    }, [currentPage]);
+
     return (
         <div className={styles.form}>
+
             <div className={styles.inputsFiltros}> 
                 {typesInputs.map((input) => (
                     <InputForm
@@ -43,59 +63,41 @@ export default function FormFiltros(){
             </Button>   
 
             <TableExtrato>
-                    <thead>
+                <thead>
+                    <tr>
+                        <th colspan="2"> Saldo total: R$ 50,00 </th>
+                        <th colspan="2">Saldo no período R$50,00</th>
+                    </tr>
+                    <tr>
+                        {titleExtrato.map( (titulo) => (
+                            <th  
+                                key={titulo.title}
+                            >
+                            {titulo.title}
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {currentTableData.map(item => {
+                        return (
                         <tr>
-                            <th colspan="2"> Saldo total: R$ 50,00 </th>
-                            <th colspan="2">Saldo no período R$50,00</th>
+                            <td>{item.id}</td>
+                            <td>{item.first_name}</td>
+                            <td>{item.last_name}</td>
+                            <td>{item.email}</td>
                         </tr>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                        <tr>
-                            {titleExtrato.map( (titulo) => (
-                                <th  
-                                    key={titulo.title}
-                                >
-                                {titulo.title}
-                                </th>
-                            ))}
-                        </tr>
-                    </tbody>
-                    
-                    <tbody>
-                        <tr>
-                            <td>14/02/2019</td>
-                            <td>R$ 1234,00</td>
-                            <td>Depósito</td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td>14/02/2019</td>
-                            <td>R$ 1234,00</td>
-                            <td>Depósito</td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td>14/02/2019</td>
-                            <td>R$ 1234,00</td>
-                            <td>Depósito</td>
-                            <td> </td>
-                        </tr>
-                        <tr>
-                            <td>14/02/2019</td>
-                            <td>R$ 1234,00</td>
-                            <td>Depósito</td>
-                            <td> </td>
-                        </tr>
-                    </tbody>
-                    
+                        );
+                    })}
+                </tbody>
             </TableExtrato>
+            
+            <Pagination
+                currentPage={currentPage}
+                totalCount={data.length}
+                pageSize={PageSize}
+                onPageChange={page => setCurrentPage(page)}
+            />
         </div>
     )
 }
