@@ -37,11 +37,11 @@ export default function Pagination (props)  {
 
         {paginationRange.map(pageNumber => {
             if (pageNumber === DOTS) {
-              return <li className={styles.paginationItem && styles.dots}>&#8230;</li>;
+              return <li key={pageNumber} className={styles.paginationItem && styles.dots}>&#8230;</li>;
             }
 
             return (
-              <li 
+              <li key={pageNumber}
                 className={
                     styles.paginationItem && pageNumber === currentPage 
                     ? styles.selected 

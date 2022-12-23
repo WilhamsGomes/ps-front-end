@@ -65,8 +65,8 @@ export default function FormFiltros(){
             <TableExtrato>
                 <thead>
                     <tr>
-                        <th colspan="2"> Saldo total: R$ 50,00 </th>
-                        <th colspan="2">Saldo no período R$50,00</th>
+                        <th colSpan="2"> Saldo total: R$ 50,00 </th>
+                        <th colSpan="2">Saldo no período R$50,00</th>
                     </tr>
                     <tr>
                         {titleExtrato.map( (titulo) => (
@@ -81,7 +81,7 @@ export default function FormFiltros(){
                 <tbody>
                     {currentTableData.map(item => {
                         return (
-                        <tr>
+                        <tr key={item.id}>
                             <td>{item.id}</td>
                             <td>{item.first_name}</td>
                             <td>{item.last_name}</td>
