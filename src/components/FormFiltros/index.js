@@ -1,25 +1,24 @@
+import React, { useState, useMemo, useContext } from 'react';
+
 import styles from "./style.module.css";
+import "./style.css";
 
 import InputForm from "../InputForm/index";
 import Button from "../ButtonForm/index";
 import TableExtrato from "../TableExtrato";
-
-import React, { useState, useMemo } from 'react';
+import SelectContas from "../SelectContas";
 import Pagination from '../PaginationTable/Pagination';
 
 import data from './data/mock-data.json';
 
-import "./style.css"
+import { MyContext } from '../Context/useContext';
 
-let PageSize = 5;
+
+let PageSize = 10;
 
 export default function FormFiltros(){
 
-    const typesInputs = [
-        {type: "date", placeholder: "", label: "Data de início"},
-        {type: "date", placeholder: "", label: "Data de Fim"},
-        {type: "text", placeholder: "Operador transacionado", label: "Nome operador transacionado"},
-    ]
+    const conta = useContext(MyContext);
 
     const titleExtrato = [
         {title: "Dados"},
@@ -27,10 +26,6 @@ export default function FormFiltros(){
         {title: "Tipo"},
         {title: "Nome operador transacionado"}
     ]
-
-    function handleExtrato(){
-        alert("Pesquisar")
-    }
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -41,23 +36,70 @@ export default function FormFiltros(){
       return data.slice(firstPageIndex, lastPageIndex);
       
     }, [currentPage]);
+   
+    const [operador, setOperador] = useState("");
+    const [dataInicial, setDataInicial] = useState("");
+    const [dataFinal, setDataFinal] = useState("");
+
+    function handleFiltros(){
+
+        if((dataInicial && dataFinal !== "") || (dataInicial && dataInicial == null)){
+            if(dataInicial < dataFinal){
+                if (conta.idConta > 0 && conta.idConta != null){
+                    handleExtrato(dataInicial, dataFinal, operador, conta.idConta)
+                } else {
+                    alert("Informe uma conta desejada")
+                }
+            } else {
+                alert("Data final precisa ser maior que a inicial")
+            }
+        } else {
+            alert("Determine um período do extrato com data inicial e final")
+        }
+        
+    }
+
+    function handleExtrato(dataInicial, dataFinal, operador, contaId){
+        console.log("Pesquisa liberada")
+        console.log("Nome do operador: ", operador)
+        console.log("Data inicial: ", dataInicial)
+        console.log("Data final: ", dataFinal)
+        console.log("Data final: ", contaId)
+    }
+
 
     return (
         <div className={styles.form}>
 
+            <SelectContas
+                onChange={(event) => event.target.value > 0 ? conta.setIdConta(event.target.value) : conta.setIdConta(null)}
+            />
+            {conta.idConta}
+
             <div className={styles.inputsFiltros}> 
-                {typesInputs.map((input) => (
-                    <InputForm
-                        key={input.label}
-                        type={input.type}
-                        placeholder={input.placeholder}
-                        label={input.label}
-                    />
-                ))}   
+                <InputForm
+                    type="date"
+                    label="Data de início"
+                    value={dataInicial}
+                    onChange={(event) => setDataInicial(event.target.value)}
+                />  
+                <InputForm
+                    type="date"
+                    label="Data de Fim"
+                    value={dataFinal}
+                    onChange={(event) => setDataFinal(event.target.value)}
+                />  
+                <InputForm
+                    type="text"
+                    placeholder="Operador transacionado"
+                    label="Nome operador transacionado"
+                    value={operador}
+                    onChange={(event) => setOperador(event.target.value)}
+                />  
             </div>
 
             <Button 
-                onClick={handleExtrato}
+                onClick={handleFiltros}
             >
                 Pesquisar
             </Button>   

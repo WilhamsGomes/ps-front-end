@@ -9,6 +9,7 @@ export default function Pagination (props)  {
 
   const paginationRange = usePagination({currentPage, totalCount, siblingCount, pageSize});
 
+
   if (currentPage === 0 || paginationRange.length < 2) {
     return null;
   }
@@ -35,13 +36,25 @@ export default function Pagination (props)  {
             <div className={styles.arrow && styles.left} />
         </li>
 
-        {paginationRange.map(pageNumber => {
+        {paginationRange.map((pageNumber, index) => {
+            
             if (pageNumber === DOTS) {
-              return <li key={pageNumber} className={styles.paginationItem && styles.dots}>&#8230;</li>;
+              return(
+                <li 
+                  key={index}
+                  className={
+                    styles.paginationItem 
+                    && styles.dots
+                  }
+                >
+                  &#8230;
+                </li>
+              ) 
             }
 
             return (
-              <li key={pageNumber}
+              <li 
+                key={index}
                 className={
                     styles.paginationItem && pageNumber === currentPage 
                     ? styles.selected 

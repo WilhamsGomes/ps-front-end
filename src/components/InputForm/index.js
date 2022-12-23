@@ -8,6 +8,9 @@ export default function InputForm(props){
                 className={styles.input}
                 type={props.type}
                 placeholder={props.placeholder}
+                value={props.value}
+                name={props.name}
+                onChange={props.onChange}
             >
             </input>
         </div>
