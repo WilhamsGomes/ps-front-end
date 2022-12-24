@@ -6,5 +6,13 @@
 }
 
 body{
-    background-color: #F6F5FC;
+    background-color: #ECF1F3;
+}
+
+a{
+    text-decoration: none;
+}
+
+ul{
+    list-style-type: none;
 }

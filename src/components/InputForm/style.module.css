@@ -12,6 +12,10 @@
     transition: gray 0.2s ease-in;
 }
 
+input:focus{
+    outline: 1px solid #F35E26;
+}
+
 .groupInput{
     display: flex;
     flex-direction: column;

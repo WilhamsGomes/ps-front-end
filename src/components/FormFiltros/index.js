@@ -2,6 +2,7 @@ import React, { useState, useMemo, useContext } from 'react';
 
 import styles from "./style.module.css";
 import "./style.css";
+import { BiSearch } from "react-icons/bi";
 
 import InputForm from "../InputForm/index";
 import Button from "../ButtonForm/index";
@@ -84,20 +85,26 @@ export default function FormFiltros(){
             baseUrl = baseUrl+"/contas?conta_id="+contaId
         }
 
-        console.log(baseUrl)
-
         fetch(baseUrl)
             .then((response) => {
                 return response.json()
             }).then((data) =>  {
-                console.log(data)
                 setTransferencias(data)
             })
             .catch((error) => {
                 console.log("erro", error)
             })
  
+        //gerarSaldo()
     }
+
+    // function gerarSaldo(){
+    //     console.log("Transferencias: ", transferencias)
+    //     const saldoTotal = transferencias.reduce((accumulator, transferencia) => {
+    //         return accumulator + (transferencia.valor);
+    //     }, 0);
+    //     console.log(saldoTotal)
+    // }
 
 
     return (
@@ -106,41 +113,43 @@ export default function FormFiltros(){
             <SelectContas
                 onChange={(event) => event.target.value > 0 ? conta.setIdConta(event.target.value) : conta.setIdConta(null)}
             />
-            {conta.idConta}
 
-            <div className={styles.inputsFiltros}> 
-                <InputForm
-                    type="date"
-                    label="Data de início"
-                    value={dataInicial}
-                    onChange={(event) => setDataInicial(event.target.value)}
-                />  
-                <InputForm
-                    type="date"
-                    label="Data de Fim"
-                    value={dataFinal}
-                    onChange={(event) => setDataFinal(event.target.value)}
-                />  
-                <InputForm
-                    type="text"
-                    placeholder="Operador transacionado"
-                    label="Nome operador transacionado"
-                    value={operador}
-                    onChange={(event) => setOperador(event.target.value)}
-                />  
-            </div>
-
-            <Button 
-                onClick={handlePesquisar}
-            >
-                Pesquisar
-            </Button>   
+            <div className={styles.pesquisar}> 
+                <div className={styles.inputsFiltros}>
+                    <InputForm
+                        type="date"
+                        label="Data de início"
+                        value={dataInicial}
+                        onChange={(event) => setDataInicial(event.target.value)}
+                    />  
+                    <InputForm
+                        type="date"
+                        label="Data de Fim"
+                        value={dataFinal}
+                        onChange={(event) => setDataFinal(event.target.value)}
+                    />  
+                    <InputForm
+                        type="text"
+                        placeholder="Operador transacionado"
+                        label="Nome operador transacionado"
+                        value={operador}
+                        onChange={(event) => setOperador(event.target.value)}
+                    />
+                </div>
+                
+                <Button 
+                    onClick={handlePesquisar}
+                >
+                    Pesquisar
+                    <BiSearch size="1.2rem"/>
+                </Button>   
+            </div> 
 
             <TableExtrato>
                 <thead>
                     <tr>
-                        <th colSpan="2"> Saldo total: R$ 50,00 </th>
-                        <th colSpan="2">Saldo no período R$50,00</th>
+                        <th colSpan="2"> Saldo total:  </th>
+                        <th colSpan="2">Saldo no período  </th>
                     </tr>
                     <tr>
                         {titleExtrato.map( (titulo) => (

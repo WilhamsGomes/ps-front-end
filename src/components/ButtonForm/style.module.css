@@ -1,14 +1,19 @@
 .button{
-    background-color: #fff;
-    width: 180px;
-    height: 30px;
-    border: 2px solid #fff;
+    background-color: #F35E26;
+    width: 250px;
+    height: 50px;
+    border: 2px solid #F35E26;
     box-shadow: 8px 4px 10px rgba(0,0,0,0.04);
     margin-top: 40px;
     border-radius: 4px;
     outline: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
-
+ 
 .button:hover{
     cursor: pointer;
 }

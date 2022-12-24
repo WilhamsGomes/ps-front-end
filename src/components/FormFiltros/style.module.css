@@ -14,6 +14,13 @@
     gap: 30px;
 }
 
+.pesquisar{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .filtro{
     display: flex;
     flex-direction: column;
@@ -27,4 +34,3 @@
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     margin-top: 10px;
 }
-
