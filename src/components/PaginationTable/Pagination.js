@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { usePagination, DOTS } from './usePagination';
 import styles from './pagination.module.css';
 
+import { ThemeContext } from "../Theme/useThemeContext"; 
+
 export default function Pagination (props)  {
+
+  const {theme} = useContext(ThemeContext);
 
   const { onPageChange, totalCount, siblingCount = 1, currentPage, pageSize } = props;
 
@@ -32,6 +36,9 @@ export default function Pagination (props)  {
           ? styles.disabled 
           : styles.paginationItem} 
           onClick={onPrevious}
+          style={{
+            background: theme === 'dark' ?  '#ECF1F3' : '#ECF1F3' 
+          }}
         >
             <div className={styles.arrow && styles.left} />
         </li>
@@ -60,6 +67,9 @@ export default function Pagination (props)  {
                     ? styles.selected 
                     : styles.paginationItem 
                 }
+                style={{
+                  color: theme === 'dark' ?  '#ECF1F3' : '#222222'
+                }}
                   onClick={() => onPageChange(pageNumber)}
                 >
                 {pageNumber}
@@ -68,11 +78,14 @@ export default function Pagination (props)  {
         })}
 
         <li className={
-          lastPage === currentPage 
-          ? styles.disabled 
-          : styles.paginationItem
-        }
+            lastPage === currentPage 
+            ? styles.disabled 
+            : styles.paginationItem
+          }
           onClick={onNext}
+          style={{
+            background: theme === 'dark' ?  '#ECF1F3' : '#ECF1F3' 
+          }}
         >
           <div className={styles.arrow && styles.right} />
         </li>

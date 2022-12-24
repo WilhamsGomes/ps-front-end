@@ -2,7 +2,6 @@
     background-color: #F35E26;
     margin-top: 20px;
     width: 100%;
-    color: #F3F3F3;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -23,9 +22,15 @@
 }
 
 .contact p{
-    color: #060606;
     font-weight: bold;
-    
+}
+
+.light{
+    color: #F3F3F3;
+}
+
+.dark{
+    color: #060606;
 }
 
 @media screen and (max-width: 700px){

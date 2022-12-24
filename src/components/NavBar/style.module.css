@@ -1,11 +1,18 @@
 .header{
     width: 100%;
     background-color: #F35E26;
-    color: #fff;
     min-height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+.light{
+    color: #fff;
+}
+
+.dark{
+    color: #222222;
 }
 
 .lista{
@@ -24,11 +31,11 @@
     cursor: pointer;
 }
 
-.header button:hover{
+.buttonNav:hover, .buttonTheme:hover{
     cursor: pointer;
 }
 
-.header button{
+.buttonNav{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,12 +43,27 @@
     width: 120px;
     height: 35px;
     border: none;
-    background-color: #fff;
     color: #F35E26;
     font-weight: bold;
     border-radius: 10px;
 }
 
-.active{
-    border-bottom: 5px solid #fff;
+.buttonNavDark{
+    background-color: #222222;
+}
+
+.buttonNavLight{
+    background-color: #fff;
+}
+
+.buttonsHeader{
+    display: flex;
+    gap: 10px;
+}
+
+.buttonTheme{
+    border: none;
+    width: 60px;
+    border-radius: 15px;
+    height: 35px;
 }

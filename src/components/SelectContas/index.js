@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./style.module.css";
+import { ThemeContext } from "../Theme/useThemeContext"; 
 
 export default function SelectContas(props){
 
     const [contas, setContas] = useState([])
+    const {theme} = useContext(ThemeContext)
 
     useEffect( () => {
         fetch("http://localhost:8080/users")
@@ -18,7 +20,12 @@ export default function SelectContas(props){
     }, [])
 
     return (
-        <div className={styles.selectContas}>
+        <div 
+            className={styles.selectContas}
+            style={{
+                color: theme === 'dark' ? '#ECF1F3' : '#222222'
+            }}
+        >
             <label>Por favor, selecione a conta para gerar o extrato</label>
             <select
                 onChange={props.onChange}

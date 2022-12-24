@@ -11,12 +11,14 @@ import SelectContas from "../SelectContas";
 import Pagination from '../PaginationTable/Pagination';
 
 import { MyContext } from '../Context/useContext';
+import { ThemeContext } from "../Theme/useThemeContext"; 
 
 let PageSize = 5;
 
 export default function FormFiltros(){
 
     const conta = useContext(MyContext);
+    const {theme} = useContext(ThemeContext);
 
     const titleExtrato = [
         {title: "Dados"},
@@ -136,8 +138,14 @@ export default function FormFiltros(){
                 onChange={(event) => event.target.value > 0 ? conta.setIdConta(event.target.value) : conta.setIdConta(null)}
             />
 
-            <div className={styles.pesquisar}> 
-                <div className={styles.inputsFiltros}>
+            <div 
+                className={styles.pesquisar} 
+            > 
+                <div className={styles.inputsFiltros} 
+                    style={{
+                        color: theme === 'dark' ? '#ECF1F3' : '#060606'
+                    }}
+                >
                     <InputForm
                         type="date"
                         label="Data de início"
@@ -161,6 +169,7 @@ export default function FormFiltros(){
                 
                 <Button 
                     onClick={handlePesquisar}
+                    
                 >
                     Pesquisar
                     <BiSearch size="1.2rem"/>
