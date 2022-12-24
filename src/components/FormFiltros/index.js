@@ -9,12 +9,10 @@ import TableExtrato from "../TableExtrato";
 import SelectContas from "../SelectContas";
 import Pagination from '../PaginationTable/Pagination';
 
-import data from './data/mock-data.json';
-
 import { MyContext } from '../Context/useContext';
 
 
-let PageSize = 10;
+let PageSize = 5;
 
 export default function FormFiltros(){
 
@@ -28,22 +26,29 @@ export default function FormFiltros(){
     ]
 
     const [currentPage, setCurrentPage] = useState(1);
-
-    const currentTableData = useMemo(() => {
-
-      const firstPageIndex = (currentPage - 1) * PageSize;
-      const lastPageIndex = firstPageIndex + PageSize;
-      return data.slice(firstPageIndex, lastPageIndex);
-      
-    }, [currentPage]);
    
     const [operador, setOperador] = useState("");
     const [dataInicial, setDataInicial] = useState("");
     const [dataFinal, setDataFinal] = useState("");
+    const [transferencias, setTransferencias] = useState([]);
 
-    function handleFiltros(){
+    const currentTableData = useMemo(() => {
 
-        if((dataInicial && dataFinal !== "") || (dataInicial && dataInicial == null)){
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return transferencias.slice(firstPageIndex, lastPageIndex);
+        
+    }, [currentPage, transferencias]);
+
+    function handlePesquisar(){
+
+        if((dataInicial === "" && dataFinal === "") ){
+            if (conta.idConta > 0 && conta.idConta != null){
+                handleExtrato(dataInicial, dataFinal, operador, conta.idConta)
+            } else {
+                alert("Informe uma conta desejada")
+            }
+        } else if(dataInicial !== "" && dataFinal !== ""){
             if(dataInicial < dataFinal){
                 if (conta.idConta > 0 && conta.idConta != null){
                     handleExtrato(dataInicial, dataFinal, operador, conta.idConta)
@@ -60,11 +65,38 @@ export default function FormFiltros(){
     }
 
     function handleExtrato(dataInicial, dataFinal, operador, contaId){
-        console.log("Pesquisa liberada")
-        console.log("Nome do operador: ", operador)
-        console.log("Data inicial: ", dataInicial)
-        console.log("Data final: ", dataFinal)
-        console.log("Data final: ", contaId)
+
+        let baseUrl = "http://localhost:8080/transferencias"
+
+        if(contaId && dataInicial && dataFinal && !operador){
+            baseUrl = baseUrl+`/contas/periodo?conta_id=${contaId}&dataInicio=${dataInicial}&dataFinal=${dataFinal}`
+        }
+
+        if(contaId && dataInicial && dataFinal && operador){
+            baseUrl = baseUrl+`/contas/operadores/periodo?conta_id=${contaId}&dataInicio=${dataInicial}&dataFinal=${dataFinal}&nome_operador_transacao=${operador}`
+        }
+
+        if(contaId && !dataInicial && !dataFinal && operador){
+            baseUrl = baseUrl+`/contas/operadores?conta_id=${contaId}&nome_operador_transacao=${operador}`
+        }
+
+        if(contaId && !dataInicial && !dataFinal && !operador){
+            baseUrl = baseUrl+"/contas?conta_id="+contaId
+        }
+
+        console.log(baseUrl)
+
+        fetch(baseUrl)
+            .then((response) => {
+                return response.json()
+            }).then((data) =>  {
+                console.log(data)
+                setTransferencias(data)
+            })
+            .catch((error) => {
+                console.log("erro", error)
+            })
+ 
     }
 
 
@@ -99,7 +131,7 @@ export default function FormFiltros(){
             </div>
 
             <Button 
-                onClick={handleFiltros}
+                onClick={handlePesquisar}
             >
                 Pesquisar
             </Button>   
@@ -124,10 +156,10 @@ export default function FormFiltros(){
                     {currentTableData.map(item => {
                         return (
                         <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.first_name}</td>
-                            <td>{item.last_name}</td>
-                            <td>{item.email}</td>
+                            <td>{item.data_transferencia}</td>
+                            <td>{item.valor}</td>
+                            <td>{item.tipo}</td>
+                            <td>{item.nome_operador_transacao}</td>
                         </tr>
                         );
                     })}
@@ -136,7 +168,7 @@ export default function FormFiltros(){
             
             <Pagination
                 currentPage={currentPage}
-                totalCount={data.length}
+                totalCount={transferencias.length}
                 pageSize={PageSize}
                 onPageChange={page => setCurrentPage(page)}
             />
