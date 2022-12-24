@@ -12,7 +12,6 @@ import Pagination from '../PaginationTable/Pagination';
 
 import { MyContext } from '../Context/useContext';
 
-
 let PageSize = 5;
 
 export default function FormFiltros(){
@@ -94,18 +93,41 @@ export default function FormFiltros(){
             .catch((error) => {
                 console.log("erro", error)
             })
- 
-        //gerarSaldo()
+
+        gerarSaldoTotal()
     }
 
-    // function gerarSaldo(){
-    //     console.log("Transferencias: ", transferencias)
-    //     const saldoTotal = transferencias.reduce((accumulator, transferencia) => {
-    //         return accumulator + (transferencia.valor);
-    //     }, 0);
-    //     console.log(saldoTotal)
-    // }
+    const saldoPeriodo = useMemo(() => {
+        const saldoTotal = transferencias.reduce((accumulator, transferencia) => {
+            return accumulator + (transferencia.valor);
+        }, 0);
+        return saldoTotal.toFixed(1)
+        
+    }, [transferencias]);
 
+    const [saldoTotal, setSaldoTotal] = useState([])
+    
+    function gerarSaldoTotal(){
+
+        fetch(`http://localhost:8080/transferencias/contas?conta_id=${conta.idConta}`)
+            .then((response) => {
+                return response.json()
+            }).then((data) =>  {
+                setSaldoTotal(data)
+            })
+            .catch((error) => {
+                console.log("erro", error)
+            })
+
+    }
+
+    const saldoTotalConta = useMemo(() => {
+        const saldoTotalConta = saldoTotal.reduce((accumulator, transferencia) => {
+            return accumulator + (transferencia.valor);
+        }, 0);
+        return saldoTotalConta.toFixed(1)
+        
+    }, [saldoTotal]);
 
     return (
         <div className={styles.form}>
@@ -148,8 +170,8 @@ export default function FormFiltros(){
             <TableExtrato>
                 <thead>
                     <tr>
-                        <th colSpan="2"> Saldo total:  </th>
-                        <th colSpan="2">Saldo no período  </th>
+                        <th colSpan="2"> Saldo total:  {saldoTotalConta}</th>
+                        <th colSpan="2">Saldo no período:  {saldoPeriodo} </th>
                     </tr>
                     <tr>
                         {titleExtrato.map( (titulo) => (
